@@ -1,4 +1,4 @@
-package nstmanager
+package com.nst
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -14,16 +14,15 @@ import java.util.concurrent.TimeUnit
 class RestStreamClient {
     private static final Long DEFAULT_BYTE_COUNT = 2048L
 
-    String accessToken = 'c.vjRP7z59RvyiGpGtI8d8nsAoppVopHdWuufQNiecZNhKAZOFaQ1uLvRMZkXm3T9lVQ6Ef7sHbajdBqUmq5vNBhnncu18E5a'
     String nestApiUrl = "https://developer-api.nest.com"
     private OkHttpClient httpClient
     private final ExecutorService executorService = Executors.newSingleThreadExecutor()
 
-    static void main(String[] args) {
-        new RestStreamClient().start()
-    }
+//    static void main(String[] args) {
+//        new RestStreamClient().start()
+//    }
 
-    void start() {
+    void start(String accessToken) {
         httpClient = new OkHttpClient().newBuilder().authenticator(new Authenticator() {
             @Override
             Request authenticate(Route route, Response response) {
