@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 class RestStreamClient {
     private static final Long DEFAULT_BYTE_COUNT = 2048L
 
-    String accessToken = 'c.vjRP7z59RvyiGpGtI8d8nsAoppVopHdWuufQNiee1gq5SPW1op7FNARIsYExB4CgMtipnbnX4Skl45K2XZhvLbo1cZNhKAZOFaQ1uLvRMZkXm3T9lVQ6Ef7sHbajdBqUmq5vNBhnncu18E5a'
+    String accessToken = 'c.vjRP7z59RvyiGpGtI8d8nsAoppVopHdWuufQNiecZNhKAZOFaQ1uLvRMZkXm3T9lVQ6Ef7sHbajdBqUmq5vNBhnncu18E5a'
     String nestApiUrl = "https://developer-api.nest.com"
     private OkHttpClient httpClient
     private final ExecutorService executorService = Executors.newSingleThreadExecutor()
