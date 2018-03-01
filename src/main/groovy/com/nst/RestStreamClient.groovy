@@ -14,15 +14,19 @@ import java.util.concurrent.TimeUnit
 class RestStreamClient {
     private static final Long DEFAULT_BYTE_COUNT = 2048L
 
-    String nestApiUrl = "https://developer-api.nest.com"
+    String url
     private OkHttpClient httpClient
     private final ExecutorService executorService = Executors.newSingleThreadExecutor()
 
-//    static void main(String[] args) {
-//        new RestStreamClient().start()
-//    }
+    static void main(String[] args) {
+        String accessToken = "Bearer c.LUZqOygAzXYT8Ts1DETCDVJDEuhz7URCq6fF1Lxh2DldMzMfBEftpgwfe3QuQtC3U5rasZcCXqkLDc1IjV67tenBwCqtlBje9yklX9N5JOz6dFHV7BPy6tZq1muj06WNPV8UYnnqWW9ix0XV"
+        String url = "https://developer-api.nest.com"
+        RestStreamClient rsc = new RestStreamClient()
+        rsc.start(url, accessToken)
+    }
 
-    void start(String accessToken) {
+    void start(String url, String accessToken) {
+        this.url = url
         httpClient = new OkHttpClient().newBuilder().authenticator(new Authenticator() {
             @Override
             Request authenticate(Route route, Response response) {
@@ -33,11 +37,19 @@ class RestStreamClient {
         executorService.execute(new RestStreamClient.Reader())
     }
 
+    void stop() {
+        executorService.shutdownNow()
+    }
+
+    void eventMessage(String message) {
+        System.out.println(message)
+    }
+
     private class Reader implements Runnable {
         @Override
         void run() {
             Response response = null
-            Request request = new Request.Builder().url(nestApiUrl).addHeader("Accept", "text/event-stream").build()
+            Request request = new Request.Builder().url(url).addHeader("Accept", "text/event-stream").build()
             try {
                 response = httpClient.newCall(request).execute()
                 Buffer buffer = new Buffer()
@@ -73,8 +85,7 @@ class RestStreamClient {
                     }
                     String eventType = currentLine.substring(7) //7 = length of("event: ")
                     String json = nextLine.substring(6) //6 = length of("data: ")
-                    System.out.println("\nevent: " +  eventType)
-                    System.out.println("data: " +  json)
+                    eventMessage("\nevent: " +  eventType + " data: " +  json)
                 }
                 i++
             }
